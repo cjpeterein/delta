@@ -673,6 +673,7 @@ fn is_filename_only_output(cmd: &CommandLine) -> bool {
         || cmd.short_options.contains("-L")
         || cmd.long_options.contains("--files-with-matches")
         || cmd.long_options.contains("--files-without-match")
+        || cmd.long_options.contains("--name-only")
 }
 
 pub fn parse_grep_line(line: &str) -> Option<GrepLine<'_>> {
@@ -1309,7 +1310,13 @@ mod tests {
 
     #[test]
     fn test_git_grep_l_preserves_hyphenated_filenames() {
-        for flag in ["-l", "-L", "--files-with-matches", "--files-without-match"] {
+        for flag in [
+            "-l",
+            "-L",
+            "--files-with-matches",
+            "--files-without-match",
+            "--name-only",
+        ] {
             let output = DeltaTest::with_args(&[])
                 .with_calling_process(&format!("git grep {} pattern", flag))
                 .with_input("my-file.rs\n")
